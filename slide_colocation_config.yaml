@@ -10,5 +10,3 @@ lubw_fields:
   - NO2
   - TEMP
   - RLF
-experiment_name: "Model Comparison NO2"
-run_name: "ual3-winter"

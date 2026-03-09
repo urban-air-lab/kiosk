@@ -15,7 +15,7 @@ load_dotenv()
 
 def main():
 
-    run_config: dict = get_config("./run_config.yaml")
+    run_config: dict = get_config("slide_colocation_config.yaml")
 
     ual_source = SensorSource.from_strings(bucket=run_config["ual_bucket"], sensor=run_config["ual_sensor"])
     lubw_source = SensorSource.from_strings(bucket=run_config["lubw_bucket"], sensor=run_config["lubw_sensor"])

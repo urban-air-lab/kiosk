@@ -9,3 +9,8 @@ def get_timestamps_with_offset() -> tuple[str, str]:
     start_time_str = start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     end_time_str = end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     return end_time_str, start_time_str
+
+def get_color(no2_value):
+    # Example: Map NO2 to red intensity (0-255)
+    intensity = min(int((no2_value / 100) * 255), 255)  # Assume max 100 for scaling
+    return [intensity, 0, 255 - intensity, 160]

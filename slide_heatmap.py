@@ -9,7 +9,7 @@ from ual.get_config import get_config
 from ual.influx.Influx_db_connector import InfluxDBConnector
 from ual.influx.influx_query_builder import InfluxQueryBuilder
 from ual.influx.sensors import SensorSource
-from utils import get_timestamps_with_offset
+from utils import get_timestamps_with_offset, get_color
 load_dotenv()
 
 
@@ -31,7 +31,6 @@ def main():
         .set_fields(run_config["ual4_fields"]) \
         .build()
     ual4_data: pd.DataFrame = connection.query_dataframe(ual4_query)
-    st.dataframe(ual4_data)
 
     ual5_query: str = InfluxQueryBuilder() \
         .set_bucket(ual5_source.get_bucket()) \
@@ -40,7 +39,6 @@ def main():
         .set_fields(run_config["ual5_fields"]) \
         .build()
     ual5_data: pd.DataFrame = connection.query_dataframe(ual5_query)
-    st.dataframe(ual5_data)
 
     data_processor: DataProcessor = (DataProcessor(ual4_data, ual5_data)
                                      .to_hourly()
@@ -60,21 +58,22 @@ def main():
         "ual5_lon": run_config["ual5_lon"]
     })
 
-    st.dataframe(combined_data)
     map_data = pd.DataFrame({
         'sensor': ['UAL-4', 'UAL-5'],
         'lat': [run_config["ual4_lat"], run_config["ual5_lat"]],
         'lon': [run_config["ual4_lon"], run_config["ual5_lon"]],
         'NO2': [ual4_data['NO2'].mean(), ual5_data['NO2'].mean()]  # Use mean or latest value
     })
+    map_data['color'] = map_data['NO2'].apply(get_color)
+    st.dataframe(map_data)
 
     # Create ScatterplotLayer to show both sensors
     layer = pdk.Layer(
         "ScatterplotLayer",
         map_data,
         get_position='[lon, lat]',
-        get_radius=50,  # Adjust size as needed
-        get_fill_color=[255, 0, 0],  # Red color
+        get_radius=25,  # Adjust size as needed
+        get_fill_color='color',
         get_stroke_color=[0, 0, 0],
         get_line_width=1,
         pickable=True,

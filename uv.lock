@@ -258,6 +258,7 @@ dependencies = [
     { name = "dotenv" },
     { name = "pandas" },
     { name = "plotly" },
+    { name = "pydeck" },
     { name = "streamlit" },
     { name = "ual" },
 ]
@@ -268,6 +269,7 @@ requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "pandas", specifier = "==2.3.3" },
     { name = "plotly", specifier = ">=6.6.0" },
+    { name = "pydeck", specifier = ">=0.9.1" },
     { name = "streamlit", specifier = ">=1.55.0" },
     { name = "ual", git = "https://github.com/urban-air-lab/common" },
 ]

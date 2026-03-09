@@ -1,0 +1,14 @@
+ual4_bucket: "ual-minute-measurement"
+ual4_sensor: "ual-4"
+ual4_lat: 49.122196
+ual4_lon: 9.208898
+ual5_bucket: "ual-minute-measurement"
+ual5_sensor: "ual-5"
+ual5_lat: 49.121983
+ual5_lon: 9.209456
+start_time: "2026-02-28T00:00:00Z"
+stop_time: "2026-02-28T00:01:00Z"
+ual4_fields:
+  - NO2
+ual5_fields:
+  - NO2

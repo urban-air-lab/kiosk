@@ -7,6 +7,8 @@ dependencies = [
     "altair==4",
     "dotenv>=0.9.9",
     "pandas==2.3.3",
+    "pandas-stubs==3.0.0.260204",
+    "pillow>=12.1.1",
     "plotly>=6.6.0",
     "pydeck>=0.9.1",
     "streamlit>=1.55.0",

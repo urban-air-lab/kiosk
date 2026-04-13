@@ -10,13 +10,11 @@ from ual.influx.Influx_db_connector import InfluxDBConnector
 from ual.influx.influx_query_builder import InfluxQueryBuilder
 from ual.influx.sensors import SensorSource
 from utils import get_timestamps_with_offset, get_color
+
 load_dotenv()
-
-
 
 def main():
     end_time_str, start_time_str = get_timestamps_with_offset()
-
     run_config: dict = get_config("slide_heatmap_config.yaml")
 
     ual4_source = SensorSource.from_strings(bucket=run_config["ual4_bucket"], sensor=run_config["ual4_sensor"])
@@ -66,6 +64,7 @@ def main():
     })
     map_data['color'] = map_data['NO2'].apply(get_color)
     st.dataframe(map_data)
+
 
     # Create ScatterplotLayer to show both sensors
     layer = pdk.Layer(

@@ -63,4 +63,4 @@ def run():
                   )
     fig.update_layout(title='Vergleich der Messergebnisse')
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width=content,key=f"plot_colocation_{time.time()}")

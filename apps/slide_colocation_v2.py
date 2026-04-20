@@ -97,7 +97,6 @@ def run():
         # WICHTIG: width=None und autosize=True für die volle Breite
         fig.update_layout(
             title='Vergleich der Messergebnisse',
-
             width=None,  # Breite NICHT festlegen (damit sie flexibel ist)
             autosize=True,  # Autosize aktivieren
             legend=dict(xanchor="auto", yanchor="auto")
@@ -106,4 +105,4 @@ def run():
         # Chart rendern
         # use_container_width=True ist entscheidend!
         # key f"{CACHE_KEY_PREFIX}_{time.time()}" verhindert den DuplicateElementID Fehler
-        st.plotly_chart(fig, use_container_width=True, key=f"{CACHE_KEY_PREFIX}_{time.time()}")
+        st.plotly_chart(fig, width='stretch\', key=f'{CACHE_KEY_PREFIX}_{time.time()}")

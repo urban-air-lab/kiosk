@@ -107,8 +107,7 @@ def run():
 
             if image_path.exists():
                 campus_map = Image.open(image_path)
-                # FIX: use_container_width=True statt width='content'
-                st.image(campus_map, use_container_width=True)
+                st.image(campus_map, width='stretch')
             else:
                 st.info(f"Lageplan nicht gefunden: {image_path}")
 

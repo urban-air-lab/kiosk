@@ -13,8 +13,8 @@ from datetime import datetime
 #APP_FILE = BASE_DIR / "state" / "current_app.txt"
 #APPS_FILE = BASE_DIR / "state" / "apps.txt"
 APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
-APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"  #
-# MOTION_FILE = "/home/kiosk/kiosk/state/last_motion.txt"
+APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"
+MOTION_FILE = "/home/kiosk/kiosk/state/last_motion.txt"
 
 # GPIO Pins
 button1 = Button(23, pull_up=True, bounce_time=0.2)

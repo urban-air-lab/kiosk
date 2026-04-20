@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import plotly.graph_objects as go
+import time
 
 from plotly.subplots import make_subplots
 from dotenv import load_dotenv
@@ -63,4 +64,4 @@ def run():
                   )
     fig.update_layout(title='Vergleich der Messergebnisse')
 
-    st.plotly_chart(fig, width=content,key=f"plot_colocation_{time.time()}")
+    st.plotly_chart(fig, width='content',key=f"plot_colocation_{time.time()}")

@@ -3,15 +3,18 @@ from gpiozero import Button, MotionSensor
 from datetime import datetime
 
 # Pfad-Setup sicherstellen
-BASE_DIR = Path(__file__).resolve().parent
+#BASE_DIR = Path(__file__).resolve().parent
 
 # Sicherheitshalber zum System-Path hinzufügen
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
+#if str(BASE_DIR) not in sys.path:
+#    sys.path.insert(0, str(BASE_DIR))
 
 # Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
-APP_FILE = BASE_DIR / "state" / "current_app.txt"
-APPS_FILE = BASE_DIR / "state" / "apps.txt"
+#APP_FILE = BASE_DIR / "state" / "current_app.txt"
+#APPS_FILE = BASE_DIR / "state" / "apps.txt"
+APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
+APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"  #
+# MOTION_FILE = "/home/kiosk/kiosk/state/last_motion.txt"
 
 # GPIO Pins
 button1 = Button(23, pull_up=True, bounce_time=0.2)

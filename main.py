@@ -6,15 +6,18 @@ from pathlib import Path
 import os
 
 # Pfad-Setup sicherstellen
-BASE_DIR = Path(__file__).resolve().parent
+#BASE_DIR = Path(__file__).resolve().parent
 
 # Sicherheitshalber zum System-Path hinzufügen
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
+#if str(BASE_DIR) not in sys.path:
+#    sys.path.insert(0, str(BASE_DIR))
 
 # Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
-APP_FILE = BASE_DIR / "state" / "current_app.txt"
-APPS_FILE = BASE_DIR / "state" / "apps.txt"
+#APP_FILE = BASE_DIR / "state" / "current_app.txt"
+#APPS_FILE = BASE_DIR / "state" / "apps.txt"
+APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
+APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"  #
+
 
 st.set_page_config(layout="wide")
 

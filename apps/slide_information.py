@@ -8,8 +8,6 @@ def run():
         layout="wide"
     )
 
-
-
     st.markdown(
         """
         <style>
@@ -113,7 +111,7 @@ def run():
         st.markdown("### Messpunkte am TechCampus")
 
         try:
-            campus_map = Image.open("../assets/urbanairlab_messpunkte-2025.webp")
+            campus_map = Image.open("/home/kiosk/kiosk/assets/urbanairlab_messpunkte-2025.webp")
             st.image(
                 campus_map,
                 width='content'

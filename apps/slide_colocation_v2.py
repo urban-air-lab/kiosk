@@ -46,7 +46,7 @@ def run():
 
     ual3_data, lubw_data = data_processor.get_inputs(), data_processor.get_targets()
 
-    st.set_page_config(layout="wide")
+#    st.set_page_config(layout="wide")
     "# Kollokationsmessungen an der LUBW Station in der Hans-Riesser-Straße" # TODO: Mit Inhalt füllen
     "Hintergrundinformationen bereitstellen, die LUBW betreibt eine Messstelle ... "
     "Seit Juli 2025 betreiben wir dort parallel eine Messstation"

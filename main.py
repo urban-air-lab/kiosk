@@ -74,29 +74,38 @@ if DEV_MODE:
             pass
 # Dev Mode ENDE
 
-# Eigentlicher Code
+# --- HAUPT LOOP IM CONTAINER ---
+# WICHTIG: Wir erstellen einen Container, der nur den Inhalt der App hält
+content_placeholder = st.empty()
 
-for module_name in list(sys.modules.keys()):
-    if module_name.startswith('apps.'):
-        del sys.modules[module_name]
+while True:
+    # 1. Zustand neu lesen (Hardware kann dazwischen gedrückt haben)
+    new_current = get_current_app()
+    if not new_current or new_current not in apps:
+        new_current = apps[0]
 
-try:
-    # Importieren
-    module = importlib.import_module(f"apps.{current}")
+    # 2. Prüfen: Ist die App gewechselt?
+    # Wenn ja -> Modul-Cache leeren
+    if new_current != current:
+        # Alle Apps-Caches entfernen, damit das neue Modul frisch geladen wird
+        for module_name in list(sys.modules.keys()):
+            if module_name.startswith('apps.'):
+                del sys.modules[module_name]
+        current = new_current
 
-    # Funktion ausführen
-    module.run()
+    try:
+        # Modul importieren
+        module = importlib.import_module(f"apps.{current}")
 
-except Exception as e:
-    st.error(f"Fehler beim Laden von {current}")
-    st.exception(e)
+        # App im Container rendern
+        # 'with' leert den Container automatisch, bevor der neue Content kommt
+        with content_placeholder.container():
+            module.run()
 
-try:
-    module = importlib.import_module(f"apps.{current}")
-    module.run()
-except Exception as e:
-    st.error(f"Fehler beim Laden von {current}")
-    st.exception(e)
+    except Exception as e:
+        with content_placeholder.container():
+            st.error(f"Fehler beim Laden von {current}")
+            st.exception(e)
 
-time.sleep(1)
-st.rerun()
+    # Kurze Pause, um CPU zu schonen
+    time.sleep(0.5)

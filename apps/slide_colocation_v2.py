@@ -15,7 +15,7 @@ from PIL import Image
 
 load_dotenv()
 
-def main():
+def run():
     run_config: dict = get_config("slide_colocation_config.yaml")
 
     ual_source = SensorSource.from_strings(bucket=run_config["ual_bucket"], sensor=run_config["ual_sensor"])
@@ -63,6 +63,3 @@ def main():
                   )
     fig.update_layout(title='Vergleich der Messergebnisse')
     st.plotly_chart(fig)
-
-if __name__ == "__main__":
-    main()

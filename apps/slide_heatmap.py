@@ -13,7 +13,7 @@ from utils import get_timestamps_with_offset, get_color
 
 load_dotenv()
 
-def main():
+def run():
     end_time_str, start_time_str = get_timestamps_with_offset()
     run_config: dict = get_config("slide_heatmap_config.yaml")
 
@@ -45,7 +45,7 @@ def main():
 
     ual4_data, ual5_data = data_processor.get_inputs(), data_processor.get_targets()
 
-    "# Heatmap der 3 Stationen auf dem Campus (unvalidierte Messwerte)" # TODO: Mit Inhalt füllen
+    "# Heatmap der 3 Stationen auf dem Campus (unvalidierte Messwerte), achsen beschriften" # TODO: Mit Inhalt füllen
 
     combined_data = pd.DataFrame({
         'NO2_UAL_4': ual4_data['NO2'],
@@ -98,6 +98,3 @@ def main():
     )
 
     st.pydeck_chart(r)
-
-if __name__ == "__main__":
-    main()

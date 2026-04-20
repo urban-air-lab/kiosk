@@ -97,8 +97,7 @@ def run():
         # WICHTIG: width=None und autosize=True für die volle Breite
         fig.update_layout(
             title='Vergleich der Messergebnisse',
-            height=600,  # Höhe festlegen vertikal
-            width=None,  # Breite NICHT festlegen (damit sie flexibel ist)
+            width='stretch',  # Breite NICHT festlegen (damit sie flexibel ist)
             autosize=True,  # Autosize aktivieren
             legend=dict(xanchor="auto", yanchor="auto")
         )

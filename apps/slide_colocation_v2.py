@@ -105,4 +105,4 @@ def run():
         # Chart rendern
         # use_container_width=True ist entscheidend!
         # key f"{CACHE_KEY_PREFIX}_{time.time()}" verhindert den DuplicateElementID Fehler
-        st.plotly_chart(fig, width='stretch\', key=f'{CACHE_KEY_PREFIX}_{time.time()}")
+        st.plotly_chart(fig, width='stretch', key=f'{CACHE_KEY_PREFIX}_{time.time()}")

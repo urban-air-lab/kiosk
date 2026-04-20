@@ -97,3 +97,6 @@ try:
 except Exception as e:
     st.error(f"Fehler beim Laden von {current}")
     st.exception(e)
+
+time.sleep(1)
+st.rerun()

@@ -13,8 +13,8 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 # Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
-APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
-APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"
+APP_FILE = BASE_DIR / "state" / "current_app.txt"
+APPS_FILE = BASE_DIR / "state" / "apps.txt"
 
 st.set_page_config(layout="wide")
 
@@ -72,6 +72,22 @@ if DEV_MODE:
 # Dev Mode ENDE
 
 # Eigentlicher Code
+
+for module_name in list(sys.modules.keys()):
+    if module_name.startswith('apps.'):
+        del sys.modules[module_name]
+
+try:
+    # Importieren
+    module = importlib.import_module(f"apps.{current}")
+
+    # Funktion ausführen
+    module.run()
+
+except Exception as e:
+    st.error(f"Fehler beim Laden von {current}")
+    st.exception(e)
+
 try:
     module = importlib.import_module(f"apps.{current}")
     module.run()

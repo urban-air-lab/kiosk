@@ -2,14 +2,21 @@ import time
 from gpiozero import Button, MotionSensor
 from datetime import datetime
 
-APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
-APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"
-MOTION_FILE = "/home/kiosk/kiosk/state/last_motion.txt"
+# Pfad-Setup sicherstellen
+BASE_DIR = Path(__file__).resolve().parent
+
+# Sicherheitshalber zum System-Path hinzufügen
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+# Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
+APP_FILE = BASE_DIR / "state" / "current_app.txt"
+APPS_FILE = BASE_DIR / "state" / "apps.txt"
 
 # GPIO Pins
-button1 = Button(23, pull_up=True)
-button2 = Button(24, pull_up=True)
-button3 = Button(25, pull_up=True)
+button1 = Button(23, pull_up=True, bounce_time=0.2)
+button2 = Button(24, pull_up=True, bounce_time=0.2)
+button3 = Button(25, pull_up=True, bounce_time=0.2)
 
 pir = MotionSensor(18)
 
@@ -79,9 +86,9 @@ while True:
     except:
         last = 0
 
-    if time.time() - last < IDLE_TIMEOUT:
-        set_brightness(BRIGHT)
-    else:
-        set_brightness(DIM)
+#    if time.time() - last < IDLE_TIMEOUT:
+#        set_brightness(BRIGHT)
+#    else:
+#        set_brightness(DIM)
 
     time.sleep(1)

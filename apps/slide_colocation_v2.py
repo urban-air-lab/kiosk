@@ -62,4 +62,5 @@ def run():
                   secondary_y=True,
                   )
     fig.update_layout(title='Vergleich der Messergebnisse')
-    st.plotly_chart(fig)
+
+    st.plotly_chart(fig, use_container_width=True)

@@ -6,8 +6,6 @@ import sys
 import os
 from pathlib import Path
 
-from pygments.styles.paraiso_dark import CURRENT_LINE
-
 DEV_MODE = False
 
 # --- 1. Pfade & Konfiguration ---
@@ -119,4 +117,4 @@ while True:
             st.error(f"Fehler beim Laden von {current}")
             st.exception(e)
 
-    time.sleep(0.5)
+    time.sleep(1.5)

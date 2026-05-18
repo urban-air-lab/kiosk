@@ -1,30 +1,37 @@
+# main.py
 import streamlit as st
 import importlib
 import time
 import sys
-from pathlib import Path
 import os
+from pathlib import Path
 
-# Pfad-Setup sicherstellen
-#BASE_DIR = Path(__file__).resolve().parent
+from pygments.styles.paraiso_dark import CURRENT_LINE
 
-# Sicherheitshalber zum System-Path hinzufügen
-#if str(BASE_DIR) not in sys.path:
-#    sys.path.insert(0, str(BASE_DIR))
+DEV_MODE = False
 
-# Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
-#APP_FILE = BASE_DIR / "state" / "current_app.txt"
-#APPS_FILE = BASE_DIR / "state" / "apps.txt"
-APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
-APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"  #
+# --- 1. Pfade & Konfiguration ---
+BASE_DIR = Path(__file__).parent
+STATE_DIR = BASE_DIR / "state"
 
+# Pfade definieren (Funktionieren jetzt auf beiden Systemen)
+CURRENT_APP_FILE = STATE_DIR / "current_app.txt"
+APPS_FILE = STATE_DIR / "apps.txt"
 
+# Layout-Helfer importieren
+try:
+    import layout_helpers
+    sys.modules['layout_helpers'] = layout_helpers
+except ImportError:
+    pass
+
+# WICHTIG: Muss als erstes Streamlit-Kommando kommen!
 st.set_page_config(layout="wide")
 
-# Funktionen definieren
+# --- HILFSFUNKTIONEN ---
 def get_current_app():
     try:
-        with open(APP_FILE) as f:
+        with open(CURRENT_APP_FILE) as f:
             return f.read().strip()
     except:
         return None
@@ -36,69 +43,74 @@ def load_apps():
     except:
         return []
 
-
-apps = load_apps()
-current = get_current_app()
-
-if current not in apps:
-    if apps:
-        current = apps[0]
-    else:
-        st.error("Keine Apps in state/apps.txt gefunden.")
-        st.stop()
-
-# Dev Mode START
-DEV_MODE = os.getenv("STELE_DEV") == "1"
+# --- DEV MODE ---
+# DEV_MODE = os.getenv("STELE_DEV") == "1"
 
 if DEV_MODE:
+    # Diese Steuerelemente bleiben jetzt dauerhaft sichtbar
     st.sidebar.header("DEV – GPIO Simulation")
 
     if st.sidebar.button("◀ Previous"):
-        with open(APP_FILE, "w") as f:
-            f.write(apps[(apps.index(current) - 1) % len(apps)])
-            st.rerun() # Sofort neu laden nach Klick
-
-    if st.sidebar.button("Next ▶"):
-        with open(APP_FILE, "w") as f:
-            f.write(apps[(apps.index(current) + 1) % len(apps)])
-            st.rerun()
-
-    if st.sidebar.button("🌐 Toggle Language"):
-        lang_file = BASE_DIR / "state" / "lang.txt"
+        apps = load_apps()
         try:
-            with open(lang_file) as f:
-                lang = f.read().strip()
-            with open(lang_file, "w") as f:
-                f.write("en" if lang == "de" else "de")
+            with open(CURRENT_APP_FILE) as f:
+                current = f.read().strip()
+            if current in apps:
+                idx = (apps.index(current) - 1) % len(apps)
+                with open(CURRENT_APP_FILE, "w") as f:
+                    f.write(apps[idx])
+                st.rerun()
         except:
             pass
-# Dev Mode ENDE
 
-# --- HAUPT LOOP IM CONTAINER ---
-# WICHTIG: Wir erstellen einen Container, der nur den Inhalt der App hält
+    if st.sidebar.button("Next ▶"):
+        apps = load_apps()
+        try:
+            with open(CURRENT_APP_FILE) as f:
+                current = f.read().strip()
+            if current in apps:
+                idx = (apps.index(current) + 1) % len(apps)
+                with open(CURRENT_APP_FILE, "w") as f:
+                    f.write(apps[idx])
+                st.rerun()
+        except:
+            pass
+
+    if st.sidebar.button("🏠 Home"):
+        apps = load_apps()
+        if apps:
+            with open(CURRENT_APP_FILE, "w") as f:
+                f.write(apps[0])
+            st.rerun()
+
+    st.sidebar.success("Dev-Mode aktiv")
+
+# --- HAUPT LOOP ---
 content_placeholder = st.empty()
 
 while True:
-    # 1. Zustand neu lesen (Hardware kann dazwischen gedrückt haben)
-    new_current = get_current_app()
-    if not new_current or new_current not in apps:
-        new_current = apps[0]
+    # Apps laden
+    apps = load_apps()
+    current = get_current_app()
 
-    # 2. Prüfen: Ist die App gewechselt?
-    # Wenn ja -> Modul-Cache leeren
-    if new_current != current:
-        # Alle Apps-Caches entfernen, damit das neue Modul frisch geladen wird
-        for module_name in list(sys.modules.keys()):
-            if module_name.startswith('apps.'):
-                del sys.modules[module_name]
-        current = new_current
+    # Falls keine aktuelle App gefunden oder ungültig -> auf erste App setzen
+    if not current or current not in apps:
+        if apps:
+            current = apps[0]
+            # Optional: Zustand direkt schreiben für Konsistenz
+            with open(CURRENT_APP_FILE, "w") as f:
+                f.write(current)
+        else:
+            with content_placeholder.container():
+                st.error("Keine Apps in state/apps.txt gefunden.")
+            time.sleep(1)
+            continue
 
     try:
-        # Modul importieren
+        # Modul dynamisch importieren
         module = importlib.import_module(f"apps.{current}")
 
-        # App im Container rendern
-        # 'with' leert den Container automatisch, bevor der neue Content kommt
+        # Inhalt rendern (nur hier wird der Platzhalter überschrieben)
         with content_placeholder.container():
             module.run()
 
@@ -107,5 +119,4 @@ while True:
             st.error(f"Fehler beim Laden von {current}")
             st.exception(e)
 
-    # Kurze Pause, um CPU zu schonen
     time.sleep(0.5)

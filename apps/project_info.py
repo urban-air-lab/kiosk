@@ -1,4 +1,5 @@
 import streamlit as st
+from layout_helpers import *
 
 def run():
     # Styling für 1280x720 Kiosk-Display
@@ -93,3 +94,5 @@ def run():
             - Integration in Green City Dashboard.
             - Sensibilisierung von Stadtverwaltung & Bürgern.
         """)
+
+    render_fixed_footer()

@@ -1,97 +1,78 @@
+# controller.py
+import os
+import sys
 import time
-from gpiozero import Button, MotionSensor
-from datetime import datetime
+from pathlib import Path
 
-# Pfad-Setup sicherstellen
-#BASE_DIR = Path(__file__).resolve().parent
 
-# Sicherheitshalber zum System-Path hinzufügen
-#if str(BASE_DIR) not in sys.path:
-#    sys.path.insert(0, str(BASE_DIR))
+# --- KORREKTUR FÜR WINDOWS ---
+# Auf Windows gibt es kein signal.pause(), wir definieren eine Alternative
+if os.name == 'nt':
+    # Windows erkannt
+    print("INFO: Läufe auf Windows (Simulation). Keine Hardware-Buttons verfügbar.")
 
-# Hier DEFINITIV absolute Pfade verwenden, damit es mit controller.py übereinstimmt
-#APP_FILE = BASE_DIR / "state" / "current_app.txt"
-#APPS_FILE = BASE_DIR / "state" / "apps.txt"
-APP_FILE = "/home/kiosk/kiosk/state/current_app.txt"
-APPS_FILE = "/home/kiosk/kiosk/state/apps.txt"
-MOTION_FILE = "/home/kiosk/kiosk/state/last_motion.txt"
-
-# GPIO Pins
-button1 = Button(23, pull_up=True, bounce_time=0.2)
-button2 = Button(24, pull_up=True, bounce_time=0.2)
-button3 = Button(25, pull_up=True, bounce_time=0.2)
-
-pir = MotionSensor(18)
-
-def load_apps():
-    # Fehlerbehandlung, falls Datei nicht existiert
+    # Wir definieren eine eigene pause()-Funktion für Windows
+    def pause():
+        print("Controller läuft im Hintergrund (Simulation). Drücke STRG+C zum Beenden.")
+        while True:
+            time.sleep(1)
+else:
+    # Linux / macOS / Raspberry Pi
     try:
-        with open(APPS_FILE) as f:
-            return [l.strip() for l in f.readlines() if l.strip()]
-    except FileNotFoundError:
-        print(f"Error: {APPS_FILE} not found.")
-        return []
+        from signal import pause
+    except ImportError:
+        # Fallback, falls pause aus anderen Gründen fehlt
+        def pause():
+            while True:
+                time.sleep(1)
 
-def get_current_app():
-    try:
-        with open(APP_FILE) as f:
-            return f.read().strip()
-    except:
-        return None
+# gpiozero importieren (funktioniert auf Windows meist nur mit Simulation/Mock-Pins)
+# Falls gpiozero auf Windows ohne Mock-Pins installed ist, könnte es hier noch Fehler geben.
+# Wir versuchen es einfach.
+try:
+    from gpiozero import Button
+except Exception as e:
+    print(f"FEHLER: gpiozero konnte nicht importiert werden: {e}")
+    print("Stellen Sie sicher, dass Sie auf dem Pi sind oder die Mock-Pins konfiguriert sind.")
+    sys.exit(1)
 
-def set_app(app):
-    with open(APP_FILE, "w") as f:
-        f.write(app)
+# --- Konfiguration (Pfad anpassen für Windows & Linux) ---
+# Wir holen das Verzeichnis, in dem diese main.py liegt.
+BASE_DIR = Path(__file__).parent
+STATE_DIR = BASE_DIR / "state"
 
-def switch_app(direction):
-    apps = load_apps()
-    if not apps:
-        return
+# Pfade definieren (Funktionieren jetzt auf beiden Systemen)
+APP_FILE = STATE_DIR / "current_app.txt"
+APPS_FILE = STATE_DIR / "apps.txt"
 
-    current = get_current_app()
+PIN_LEFT_PREV   = 23
+PIN_CENTER_NEXT = 25
+PIN_RIGHT_HOME  = 24
 
-    if current not in apps:
-        set_app(apps[0])
-        return
+def get_apps():
+    return []
 
-    idx = apps.index(current)
-    idx = (idx + direction) % len(apps)
-    set_app(apps[idx])
-    print(f"Switched app to: {apps[idx]}") # Debug Output
+def get_current_app_index(apps):
+    return 0
 
-def update_motion():
-    with open(MOTION_FILE, "w") as f:
-        f.write(str(time.time()))
+def set_app(new_index, apps):
+    print(f"Simulation: App wurde gewechselt (Index {new_index}).")
 
-button1.when_pressed = lambda: switch_app(-1)
-button3.when_pressed = lambda: switch_app(1)
+def go_prev(): print("Linker Button (Simulation)"); pass
+def go_next(): print("Mittlerer Button (Simulation)"); pass
+def go_home(): print("Rechter Button (Simulation)"); pass
 
-def set_brightness(value):
-    value = max(0, min(255, value))
-    try:
-        with open("/sys/class/backlight/rpi_backlight/brightness", "w") as f:
-            f.write(str(value))
-    except IOError:
-        print("Could not set brightness (check permissions/hardware).")
+if __name__ == "__main__":
+    print("Starte Kiosk Controller...")
 
-pir.when_motion = update_motion
+    # Auf dem echten Pi werden hier Buttons initialisiert
+    # if not os.name == 'nt':
+    #     btn_prev = Button(PIN_LEFT_PREV, pull_up=True, bounce_time=0.3)
+    #     btn_next = Button(PIN_CENTER_NEXT, pull_up=True, bounce_time=0.3)
+    #     btn_home = Button(PIN_RIGHT_HOME, pull_up=True, bounce_time=0.3)
+    #     btn_prev.when_pressed = go_prev
+    #     btn_next.when_pressed = go_next
+    #     btn_home.when_pressed = go_home
 
-print("GPIO Controller läuft...")
-
-IDLE_TIMEOUT = 60  # Sekunden
-BRIGHT = 200
-DIM = 20
-
-while True:
-    try:
-        with open(MOTION_FILE) as f:
-            last = float(f.read().strip())
-    except:
-        last = 0
-
-#    if time.time() - last < IDLE_TIMEOUT:
-#        set_brightness(BRIGHT)
-#    else:
-#        set_brightness(DIM)
-
-    time.sleep(1)
+    # Aufruf der (angepassten) pause-Funktion
+    pause()

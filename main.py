@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from layout_helpers import *
 
-DEV_MODE = False
+DEV_MODE = True
 
 # --- Pfade & Konfiguration ---
 BASE_DIR = Path(__file__).parent
@@ -64,7 +64,40 @@ if "last_app" not in st.session_state:
 # --- DEV MODE (unverändert) ---
 if DEV_MODE:
     st.sidebar.header("DEV – GPIO Simulation")
-    # ... ihr bestehender Code für Previous/Next/Home ...
+
+    if st.sidebar.button("◀ Previous"):
+        apps = load_apps()
+        try:
+            with open(APP_FILE) as f:
+                current = f.read().strip()
+            if current in apps:
+                idx = (apps.index(current) - 1) % len(apps)
+                with open(APP_FILE, "w") as f:
+                    f.write(apps[idx])
+                st.rerun()
+        except:
+            pass
+
+    if st.sidebar.button("Next ▶"):
+        apps = load_apps()
+        try:
+            with open(APP_FILE) as f:
+                current = f.read().strip()
+            if current in apps:
+                idx = (apps.index(current) + 1) % len(apps)
+                with open(APP_FILE, "w") as f:
+                    f.write(apps[idx])
+                st.rerun()
+        except:
+            pass
+
+    if st.sidebar.button("🏠 Home"):
+        apps = load_apps()
+        if apps:
+            with open(APP_FILE, "w") as f:
+                f.write(apps[0])
+            st.rerun()
+
     st.sidebar.success("Dev-Mode aktiv")
 
 # --- Apps & aktuellen Eintrag laden ---

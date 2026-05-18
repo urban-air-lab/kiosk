@@ -73,10 +73,10 @@ BOUNCE_TIME = 0.3
 def load_apps():
     """Liest die Liste der verfügbaren Apps aus apps.txt."""
     try:
-        with open(CURRENT_APP_FILE, "r", encoding="utf-8") as f:
+        with open(APP_FILE, "r", encoding="utf-8") as f:
             return [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
-        print(f"[controller] FEHLER: {CURRENT_APP_FILE} nicht gefunden!")
+        print(f"[controller] FEHLER: {APP_FILE} nicht gefunden!")
         return []
 
 

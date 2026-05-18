@@ -52,12 +52,12 @@ except Exception as e:
 
 # --- Konfiguration (Pfad anpassen für Windows & Linux) ---
 # Wir holen das Verzeichnis, in dem diese main.py liegt.
-BASE_DIR = Path(__file__).parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 STATE_DIR = BASE_DIR / "state"
 
 # Pfade definieren (Funktionieren jetzt auf beiden Systemen)
-APP_FILE = BASE_DIR / "current_app.txt"
-CURRENT_APP_FILE = BASE_DIR / "apps.txt"
+APP_FILE = STATE_DIR / "current_app.txt"
+CURRENT_APP_FILE = STATE_DIR / "apps.txt"
 
 PIN_LEFT   = 23
 PIN_MIDDLE = 24

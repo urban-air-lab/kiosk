@@ -56,8 +56,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATE_DIR = BASE_DIR / "state"
 
 # Pfade definieren (Funktionieren jetzt auf beiden Systemen)
-APP_FILE = STATE_DIR / "current_app.txt"
-CURRENT_APP_FILE = STATE_DIR / "apps.txt"
+APP_FILE = STATE_DIR / "apps.txt"
+CURRENT_APP_FILE = STATE_DIR / "current_app.txt"
 
 print(f"[controller] BASE_DIR = {BASE_DIR}")
 print(f"[controller] APP_FILE = {APP_FILE} (existiert: {APP_FILE.exists()})")

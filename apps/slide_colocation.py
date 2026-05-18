@@ -86,23 +86,49 @@ def run():
 
         # --- GRAFIK ---
         fig = make_subplots(specs=[[{"secondary_y": True}]])
-        fig.add_trace(go.Scatter(x=ual3_data.index, y=ual3_data['NO2'], mode='lines', name='UAL3 NO2'),
-                      secondary_y=False,
-                      )
-        fig.add_trace(go.Scatter(x=lubw_data.index, y=lubw_data['NO2'], mode='lines', name='LUBW NO2'),
-                      secondary_y=False,
-                      )
-        fig.add_trace(go.Scatter(x=lubw_data.index, y=lubw_data['RLF'], mode='lines', name='rel. hum'),
-                      secondary_y=True,
-                      )
+
+        fig.add_trace(
+            go.Scatter(
+                x=ual3_data.index,
+                y=ual3_data['NO2'],
+                mode='lines',
+                name='UAL3 NO2 [µg/m³]',
+                line=dict(color='#000000', width=2)  # Schwarz
+            ),
+            secondary_y=False,
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=lubw_data.index,
+                y=lubw_data['NO2'],
+                mode='lines',
+                name='LUBW NO2 [µg/m³]',
+                line=dict(color='#50C878', width=2)  # Dunkelgrün
+            ),
+            secondary_y=False,
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=lubw_data.index,
+                y=lubw_data['RLF'],
+                mode='lines',
+                name='relative Feuchtigkeit [%]',
+                line=dict(color='#1f4e79', width=2, dash='dot')  # Dunkelblau, gestrichelt
+            ),
+            secondary_y=True,
+        )
 
         # Layout Einstellungen
         # WICHTIG: width=None und autosize=True für die volle Breite
         fig.update_layout(
-            title='Vergleich der Messergebnisse',
-            width=None,  # Breite NICHT festlegen (damit sie flexibel ist)
-            autosize=True,  # Autosize aktivieren
-            legend=dict(xanchor="auto", yanchor="auto")
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            xaxis=dict(gridcolor='#e0e0e0'),
+            yaxis=dict(gridcolor='#e0e0e0', title='NO2 [µg/m³]'),
+            yaxis2=dict(title='rel. Feuchte [%]', showgrid=False),
+            legend=dict(bgcolor='rgba(255,255,255,0.8)'),
         )
 
         # Chart rendern

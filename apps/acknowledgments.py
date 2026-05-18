@@ -2,9 +2,6 @@ import streamlit as st
 from layout_helpers import *
 
 def run():
-    # --- FIX: Top-Spacer gegen abgeschnittenen Titel ---
-    st.markdown("<div style='height:1.6rem'></div>", unsafe_allow_html=True)
-
     # ---------- Titel ----------
     st.markdown("## Danksagung")
 
@@ -19,48 +16,34 @@ Klimaschutz im Kleinen, Reallabor und Begegnungsort – **vielen Dank für Ihre 
         ''')
 
     # ---------- 3‑Spalten‑Layout ----------
-    left, middle, right = st.columns([1.35, 0.95, 1.35])
+    left, right = st.columns([1.35, 1.35])
 
     # ---------- Linke Spalte ----------
     with left:
         st.markdown(
             """
             - Gudula Achterberg
-            - Ulrike Barthelmeß
-            - Annette Baumann
-            - Gianna Cuttica
-            - Melanie Dominke
-            - EDEKA Südwest und Stiftung NatureLife-International
-            - EDEKA Ueltzhöfer
-            - Förderkreis der Hochschule Heilbronn e. V.
-           """
-        )
-
-    # ---------- Bild ----------
-    with middle:
-        st.markdown(
-            """
-            - Charles und Dr. Melanie Gish
-            - Anna und Tobias Held
-            - Dr. Katja Horneffer
-            - Thomas Jakob & Daniela Finken
+            - Regina Reuz
+            - Jutta Trumpfheller
             - Béatrice Kachel
-            - Koeber Landschaftsarchitektur GmbH
-            - KlimaStiftung der Kreissparkasse Heilbronn
-            """
+            - Marco Wollny
+            - Mirja Wollny
+            - Klimastiftung Kreissparkasse Heilbronn
+            - Melanie Dominke           """
         )
 
     # ---------- Rechte Spalte ----------
     with right:
         st.markdown(
             """
-            - Kreissparkasse Heilbronn
-            - Paula Leihenseder
-            - Literaturhaus Heilbronn
-            - Regina Reuz
-            - Roland Schweizer
-            - Jutta Trumpfheller
-            - Marco und Mirja Wollny
+            - Thomas Jakob & Daniela Finken 
+            - Uelzhöffer LEH Ellhofen KG
+            - Uelzhöffer LEH Sontheim KG
+            - Baumann
+            - Uelzhöffer LEH Südbahnhof KG
+            - Koeber Landschaftsarchitektur GmbH
+            - EDEKA Südwest
+            - Ulrike Barthelmes
             """
         )
 

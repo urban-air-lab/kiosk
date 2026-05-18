@@ -56,8 +56,8 @@ BASE_DIR = Path(__file__).parent
 STATE_DIR = BASE_DIR / "state"
 
 # Pfade definieren (Funktionieren jetzt auf beiden Systemen)
-APP_FILE = STATE_DIR / "current_app.txt"
-CURRENT_APP_FILE = STATE_DIR / "apps.txt"
+APP_FILE = BASE_DIR / "current_app.txt"
+CURRENT_APP_FILE = BASE_DIR / "apps.txt"
 
 PIN_LEFT   = 23
 PIN_MIDDLE = 24

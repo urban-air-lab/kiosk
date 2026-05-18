@@ -52,7 +52,7 @@ except Exception as e:
 
 # --- Konfiguration (Pfad anpassen für Windows & Linux) ---
 # Wir holen das Verzeichnis, in dem diese main.py liegt.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 STATE_DIR = BASE_DIR / "state"
 
 # Pfade definieren (Funktionieren jetzt auf beiden Systemen)

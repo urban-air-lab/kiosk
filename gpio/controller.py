@@ -60,7 +60,7 @@ APP_FILE = STATE_DIR / "current_app.txt"
 CURRENT_APP_FILE = STATE_DIR / "apps.txt"
 
 print(f"[controller] BASE_DIR = {BASE_DIR}")
-print(f"[controller] APPS_FILE = {APPS_FILE} (existiert: {APPS_FILE.exists()})")
+print(f"[controller] APP_FILE = {APP_FILE} (existiert: {APP_FILE.exists()})")
 
 
 PIN_LEFT   = 23

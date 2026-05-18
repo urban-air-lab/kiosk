@@ -109,4 +109,4 @@ def run():
         # key f"{CACHE_KEY_PREFIX}_{time.time()}" verhindert den DuplicateElementID Fehler
         st.plotly_chart(fig, width='stretch', key=f"{CACHE_KEY_PREFIX}_{time.time()}")
 
-        render_fixed_footer()
+#        render_fixed_footer()

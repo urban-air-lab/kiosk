@@ -2,66 +2,6 @@ import streamlit as st
 from layout_helpers import *
 
 def run():
-    # ---------- Page Config ----------
-    st.set_page_config(
-        page_title="Fördernde",
-        layout="wide"
-    )
-
-    # ---------- CI + Platzspar‑CSS ----------
-    st.markdown(
-        """
-        <style>
-        /* Gesamtfläche */
-        .block-container {
-            padding: 0.6rem 1.6rem;
-            max-width: 1280px;
-        }
-
-
-        /* Farben (CI-nahe, anpassbar) */
-        :root {
-            --ci-blue: #003A8F;
-            --ci-lightblue: #E6EEF8;
-            --ci-gray: #4A4A4A;
-        }
-
-        /* Titel */
-        h1, h2 {
-            color: var(--ci-blue);
-            margin-bottom: 0.1rem;
-        }
-
-        h3 {
-            color: var(--ci-blue);
-            margin-top: 0.4rem;
-            margin-bottom: 0.2rem;
-        }
-
-        p, li {
-            color: var(--ci-gray);
-            font-size: 0.92rem;
-        }
-
-        ul {
-            margin-top: 0.2rem;
-            margin-bottom: 0.5rem;
-            padding-left: 1.2rem;
-        }
-
-        hr {
-            margin: 0.6rem 0;
-        }
-
-        /* Sidebar komplett aus */
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     # --- FIX: Top-Spacer gegen abgeschnittenen Titel ---
     st.markdown("<div style='height:1.6rem'></div>", unsafe_allow_html=True)
 
@@ -125,4 +65,4 @@ Klimaschutz im Kleinen, Reallabor und Begegnungsort – **vielen Dank für Ihre 
         )
 
     # ---------- Footer ----------
-    render_fixed_footer()
+#    render_fixed_footer()

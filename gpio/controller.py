@@ -146,8 +146,8 @@ def setup_gpio():
 
     print("[controller] GPIO-Buttons initialisiert:")
     print(f"   LEFT  (GPIO {PIN_LEFT})  → Zurück")
-    print(f"   MID   (GPIO {PIN_MIDDLE}) → Weiter")
-    print(f"   RIGHT (GPIO {PIN_RIGHT}) → Home")
+    print(f"   MID   (GPIO {PIN_MIDDLE}) → Home")
+    print(f"   RIGHT (GPIO {PIN_RIGHT}) → Weiter")
 
     return btn_left, btn_middle, btn_right
 

@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from layout_helpers import *
 
-DEV_MODE = True
+DEV_MODE = False
 
 # --- Pfade & Konfiguration ---
 BASE_DIR = Path(__file__).parent

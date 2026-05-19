@@ -56,11 +56,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATE_DIR = BASE_DIR / "state"
 
 # Pfade definieren (Funktionieren jetzt auf beiden Systemen)
-APP_FILE = STATE_DIR / "apps.txt"
+APPS_FILE = STATE_DIR / "apps.txt"
 CURRENT_APP_FILE = STATE_DIR / "current_app.txt"
 
 print(f"[controller] BASE_DIR = {BASE_DIR}")
-print(f"[controller] APP_FILE = {APP_FILE} (existiert: {APP_FILE.exists()})")
+print(f"[controller] APPS_FILE = {APPS_FILE} (existiert: {APPS_FILE.exists()})")
 print(f"[controller] CURRENT_APP_FILE  = {CURRENT_APP_FILE}  (existiert: {CURRENT_APP_FILE.exists()})")
 
 PIN_LEFT   = 23
@@ -73,10 +73,10 @@ BOUNCE_TIME = 0.3
 def load_apps():
     """Liest die Liste der verfügbaren Apps aus apps.txt."""
     try:
-        with open(APP_FILE, "r", encoding="utf-8") as f:
+        with open(APPS_FILE, "r", encoding="utf-8") as f:
             return [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
-        print(f"[controller] FEHLER: {APP_FILE} nicht gefunden!")
+        print(f"[controller] FEHLER: {APPS_FILE} nicht gefunden!")
         return []
 
 
@@ -109,6 +109,13 @@ def on_left():
     set_current_app(apps[idx])
 
 def on_middle():
+    """Home: zurück zur ersten App."""
+    apps = load_apps()
+    if not apps:
+        return
+    set_current_app(apps[0])
+
+def on_right():
     """Weiter: gehe zur nächsten App."""
     apps = load_apps()
     if not apps:
@@ -119,13 +126,6 @@ def on_middle():
     else:
         idx = 0
     set_current_app(apps[idx])
-
-def on_right():
-    """Home: zurück zur ersten App."""
-    apps = load_apps()
-    if not apps:
-        return
-    set_current_app(apps[0])
 
 # ---------- GPIO-Initialisierung (nur auf dem Pi) ----------
 def setup_gpio():
